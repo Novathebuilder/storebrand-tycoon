@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storebrands Tycoon - Spill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .game-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2em;
+            color: #333;
+        }
+        .money-display {
+            font-size: 1.5em;
+            margin: 20px 0;
+            color: #00c851;
+        }
+        .button {
+            padding: 15px 30px;
+            background-color: #00c851;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #007e33;
+        }
+        .employee-list {
+            margin-top: 20px;
+        }
+        .employee {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+        .legendary {
+            background-color: #f9d71c;
+            color: #d83b01;
+        }
+        .basic {
+            background-color: #00c851;
+            color: white;
+        }
+        .upgrade {
+            margin-top: 20px;
+            background-color: #f2a900;
+        }
+        .upgrade:hover {
+            background-color: #d88f00;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>Velkommen til Storebrands Tycoon</h1>
+        <p>Start bankvirksomheten din!</p>
+
+        <div class="money-display">
+            <span>Pengene dine: </span><span id="moneyAmount">0</span> kr
+        </div>
+
+        <!-- Employee Purchase Section -->
+        <div class="employee-list">
+            <h2>Kjøp ansatte</h2>
+            <div class="employee basic" onclick="hireEmployee('basic')">
+                <p>Basic Ansatt</p>
+                <p>Kostnad: 50 kr</p>
+                <p>Fordel: Øker inntekt med 5 kr per runde</p>
+            </div>
+            <div class="employee legendary" onclick="hireEmployee('legendary')">
+                <p>Legendary Ansatt</p>
+                <p>Kostnad: 200 kr</p>
+                <p>Fordel: Øker inntekt med 25 kr per runde</p>
+            </div>
+        </div>
+
+        <!-- Oppgraderingsknapp -->
+        <button class="button upgrade" onclick="upgradeBank()">Oppgrader banken</button>
+        
+        <p id="upgradeStatus"></p>
+    </div>
+
+    <script>
+        let money = 0;
+        let employees = { basic: 0, legendary: 0 };
+        let income = 0;
+
+        // Kjøp ansatt
+        function hireEmployee(type) {
+            if (type === 'basic' && money >= 50) {
+                employees.basic++;
+                money -= 50;
+                income += 5; // Basic ansatt øker inntekten med 5 kr per runde
+                updateMoney();
+                alert('Du har ansatt en Basic Ansatt!');
+            } else if (type === 'legendary' && money >= 200) {
+                employees.legendary++;
+                money -= 200;
+                income += 25; // Legendary ansatt øker inntekten med 25 kr per runde
+                updateMoney();
+                alert('Du har ansatt en Legendary Ansatt!');
+            } else {
+                alert('Du har ikke nok penger til å ansette denne typen ansatt.');
+            }
+        }
+
+        // Oppdater pengene
+        function updateMoney() {
+            document.getElementById("moneyAmount").innerText = money;
+        }
+
+        // Oppgradere banken
+        function upgradeBank() {
+            if (money >= 200) {
+                money -= 200;
+                document.getElementById("upgradeStatus").innerText = "Banken er oppgradert!";
+                updateMoney();
+            } else {
+                document.getElementById("upgradeStatus").innerText = "Du trenger 200 kr for å oppgradere banken.";
+            }
+        }
+
+        // Funksjon for å tjene penger basert på ansatte
+        function earnMoney() {
+            money += income;
+            updateMoney();
+        }
+
+        // Tjen penger automatisk hver 3. sekund
+        setInterval(earnMoney, 3000);
+    </script>
+
+</body>
+</html>
